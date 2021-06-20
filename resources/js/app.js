@@ -3,7 +3,7 @@ import Vuetify from "vuetify";
 import "vuetify/dist/vuetify.min.css";
 import axios from "axios";
 import VueAxios from "vue-axios";
-import router from './router';
+import router from "./router";
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -23,15 +23,11 @@ window.Vue = require("vue").default;
  */
 
 const files = require.context("./", true, /\.vue$/i);
-files.keys().map(key =>
-  Vue.component(
-    key
-      .split("/")
-      .pop()
-      .split(".")[0],
-    files(key).default
-  )
-);
+files
+  .keys()
+  .map((key) =>
+    Vue.component(key.split("/").pop().split(".")[0], files(key).default)
+  );
 
 // Vue.component(
 //   "example-component",
@@ -50,7 +46,7 @@ Vue.use(VueAxios, axios);
 const app = new Vue({
   el: "#app",
   vuetify: new Vuetify({
-    theme: { dark: true }
+    theme: { dark: true },
   }),
-  router: router
+  router: router,
 });

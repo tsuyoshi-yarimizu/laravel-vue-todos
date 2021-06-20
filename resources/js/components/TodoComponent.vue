@@ -83,7 +83,9 @@
             </v-toolbar>
           </template>
           <template v-slot:item.action="{ item }">
-            <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
+            <v-icon small class="mr-2" @click="editItem(item)"
+              >mdi-pencil</v-icon
+            >
             <v-icon small class="mr-2">mdi-delete</v-icon>
           </template>
         </v-data-table>
@@ -100,20 +102,20 @@ export default {
     headers: [
       {
         text: "id",
-        value: "id"
+        value: "id",
       },
       {
         text: "タスク名",
-        value: "todoName"
+        value: "todoName",
       },
       {
         text: "期限",
-        value: "expire"
+        value: "expire",
       },
       {
         text: "アクション",
-        value: "action"
-      }
+        value: "action",
+      },
     ],
     items: [],
     editIndex: -1,
@@ -121,19 +123,19 @@ export default {
       id: "",
       todoName: "",
       todoDetail: "",
-      expire: ""
+      expire: "",
     },
     editedItem: {
       id: "",
       todoName: "",
       todoDetail: "",
-      expire: ""
-    }
+      expire: "",
+    },
   }),
   computed: {
     formTitle() {
       return this.editIndex === -1 ? "New Item" : "Edit Item";
-    }
+    },
   },
   created() {
     this.fetchTodos();
@@ -153,44 +155,50 @@ export default {
     },
     save() {
       if (this.editIndex === -1) {
-        this.axios.post('/api/todo', {
-          todo_name: this.editedItem.todoName,
-          todo_detail: this.editedItem.todoDetail,
-          expire: this.editedItem.expire
-        }).then(() => {
-          this.$router.go({
-            path: this.$router.currentRoute.path,
-            force: true
+        this.axios
+          .post("/api/todo", {
+            todo_name: this.editedItem.todoName,
+            todo_detail: this.editedItem.todoDetail,
+            expire: this.editedItem.expire,
+          })
+          .then(() => {
+            this.$router.go({
+              path: this.$router.currentRoute.path,
+              force: true,
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+            alert("Save task failed.");
           });
-        }).catch((err) => {
-          console.log(err);
-          alert('Save task failed.');
-        })
       } else {
-        this.axios.put(`/api/todo/${this.editedItem.id}`, {
-          todo_name: this.editedItem.todoName,
-          todo_detail: this.editedItem.todoDetail,
-          expire: this.editedItem.expire
-        }).then(() => {
-          location.reload();
-        }).catch((err) => {
-          console.log(err);
-          alert('Update task failed.');
-        });
+        this.axios
+          .put(`/api/todo/${this.editedItem.id}`, {
+            todo_name: this.editedItem.todoName,
+            todo_detail: this.editedItem.todoDetail,
+            expire: this.editedItem.expire,
+          })
+          .then(() => {
+            location.reload();
+          })
+          .catch((err) => {
+            console.log(err);
+            alert("Update task failed.");
+          });
       }
     },
     async fetchTodos() {
-      const response = await this.axios.get('/api/todo');
+      const response = await this.axios.get("/api/todo");
       const todos = response.data.todos;
       todos.forEach((todo) => {
         this.items.push({
           id: todo.id,
           todoName: todo.todo_name,
           todoDetail: todo.todo_detail,
-          expire: todo.expire
+          expire: todo.expire,
         });
       });
-    }
-  }
+    },
+  },
 };
 </script>
