@@ -1,9 +1,6 @@
 <template>
   <v-app>
-    <v-navigation-drawer
-      v-model="drawer"
-      app
-    />
+    <v-navigation-drawer v-model="drawer" app />
     <v-app-bar app>
       <v-app-bar-nav-icon @click="drawer = !drawer" />
       <v-toolbar-title>Todo Apps</v-toolbar-title>
@@ -21,10 +18,7 @@
             <v-toolbar flat>
               <v-toolbar-title>Todo List</v-toolbar-title>
               <v-spacer />
-              <v-dialog
-                v-model="dialog"
-                max-width="500px"
-              >
+              <v-dialog v-model="dialog" max-width="500px">
                 <template #activator="{ on, attr }">
                   <v-btn
                     color="primary"
@@ -81,31 +75,18 @@
                   </v-card-text>
                   <v-card-actions>
                     <v-spacer />
-                    <v-btn @click="dialogClose">
-                      Cancel
-                    </v-btn>
-                    <v-btn @click="save">
-                      Save
-                    </v-btn>
+                    <v-btn @click="dialogClose"> Cancel </v-btn>
+                    <v-btn @click="save"> Save </v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
             </v-toolbar>
           </template>
           <template #[`item.action`]="{ item }">
-            <v-icon
-              small
-              class="mr-2"
-              @click="editItem(item)"
-            >
+            <v-icon small class="mr-2" @click="editItem(item)">
               mdi-pencil
             </v-icon>
-            <v-icon
-              small
-              class="mr-2"
-            >
-              mdi-delete
-            </v-icon>
+            <v-icon small class="mr-2"> mdi-delete </v-icon>
           </template>
         </v-data-table>
       </v-container>
@@ -206,17 +187,27 @@ export default {
           });
       }
     },
-    async fetchTodos() {
-      const response = await this.axios.get("/api/todo");
-      const todos = response.data.todos;
-      todos.forEach((todo) => {
-        this.items.push({
-          id: todo.id,
-          todoName: todo.todo_name,
-          todoDetail: todo.todo_detail,
-          expire: todo.expire,
+    fetchTodos() {
+      this.axios
+        .get("/api/todo")
+        .then((response) => {
+          const todos = response.data.todos;
+          todos.forEach((todo) => {
+            this.items.push({
+              id: todo.id,
+              todoName: todo.todo_name,
+              todoDetail: todo.todo_detail,
+              expire: todo.expire,
+            });
+          });
+        })
+        .catch((err) => {
+          if (err.response.status === 401) {
+            this.$router.push({
+              path: "login",
+            });
+          }
         });
-      });
     },
   },
 };
