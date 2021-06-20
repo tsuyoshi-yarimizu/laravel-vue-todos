@@ -1,8 +1,11 @@
 <template>
   <v-app>
-    <v-navigation-drawer v-model="drawer" app></v-navigation-drawer>
+    <v-navigation-drawer
+      v-model="drawer"
+      app
+    />
     <v-app-bar app>
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click="drawer = !drawer" />
       <v-toolbar-title>Todo Apps</v-toolbar-title>
     </v-app-bar>
 
@@ -14,12 +17,15 @@
           :items-per-page="15"
           class="elevation-1"
         >
-          <template v-slot:top>
+          <template #top>
             <v-toolbar flat>
               <v-toolbar-title>Todo List</v-toolbar-title>
-              <v-spacer></v-spacer>
-              <v-dialog v-model="dialog" max-width="500px">
-                <template v-slot:activator="{ on, attr }">
+              <v-spacer />
+              <v-dialog
+                v-model="dialog"
+                max-width="500px"
+              >
+                <template #activator="{ on, attr }">
                   <v-btn
                     color="primary"
                     dark
@@ -42,7 +48,7 @@
                             v-model="editedItem.id"
                             label="ID"
                             readonly
-                          ></v-text-field>
+                          />
                         </v-col>
                       </v-row>
                       <v-row>
@@ -50,7 +56,7 @@
                           <v-text-field
                             v-model="editedItem.todoName"
                             label="タスク名"
-                          ></v-text-field>
+                          />
                         </v-col>
                       </v-row>
                       <v-row>
@@ -59,7 +65,7 @@
                             outlined
                             v-model="editedItem.todoDetail"
                             label="タスク詳細"
-                          ></v-textarea>
+                          />
                         </v-col>
                       </v-row>
                       <v-row>
@@ -68,25 +74,38 @@
                             v-model="editedItem.expire"
                             label="期限"
                             type="date"
-                          ></v-text-field>
+                          />
                         </v-col>
                       </v-row>
                     </v-container>
                   </v-card-text>
                   <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn @click="dialogClose">Cancel</v-btn>
-                    <v-btn @click="save">Save</v-btn>
+                    <v-spacer />
+                    <v-btn @click="dialogClose">
+                      Cancel
+                    </v-btn>
+                    <v-btn @click="save">
+                      Save
+                    </v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
             </v-toolbar>
           </template>
-          <template v-slot:item.action="{ item }">
-            <v-icon small class="mr-2" @click="editItem(item)"
-              >mdi-pencil</v-icon
+          <template #[`item.action`]="{ item }">
+            <v-icon
+              small
+              class="mr-2"
+              @click="editItem(item)"
             >
-            <v-icon small class="mr-2">mdi-delete</v-icon>
+              mdi-pencil
+            </v-icon>
+            <v-icon
+              small
+              class="mr-2"
+            >
+              mdi-delete
+            </v-icon>
           </template>
         </v-data-table>
       </v-container>
